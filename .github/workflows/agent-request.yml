@@ -1,0 +1,29 @@
+# Test harness for the sandbox: posts a comment as github-actions[bot] so a machine
+# (listed in Policy bots) can request work from the agent without a person's account.
+# Manual only: workflow_dispatch, so it never runs on push.
+name: agent request
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: issue number to comment on
+        required: true
+        default: '1'
+        type: string
+      body:
+        description: comment body
+        required: true
+        type: string
+permissions:
+  issues: write
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post the comment as github-actions[bot]
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BODY: ${{ inputs.body }}
+          ISSUE: ${{ inputs.issue }}
+          REPO: ${{ github.repository }}
+        run: gh issue comment "$ISSUE" --repo "$REPO" --body "$BODY"
