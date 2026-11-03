@@ -1,2 +1,2 @@
 # dsh-superagent-sandbox
-dsh-superagent sandbox: the proactive agent works on this repository
+This repository is the sandbox for the proactive agent.
